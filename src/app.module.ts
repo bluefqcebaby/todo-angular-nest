@@ -1,3 +1,4 @@
+import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
@@ -11,8 +12,9 @@ import { TodoModule } from './todo/todo.module';
   imports: [
     TodoModule,
     ProjectModule,
+    ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
-      url: 'postgres://thebjbdfinubms:9a390e7186f6e324feea5fd4cb0a334920751d1c8bd5bac2b2983958daa0c02d@ec2-54-77-40-202.eu-west-1.compute.amazonaws.com:5432/dd8o6dd0fsm3r9',
+      url: process.env.DATABASE_URL,
       type: 'postgres',
       // host: 'localhost',
       // database: 'Todo',
