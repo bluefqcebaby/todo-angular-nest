@@ -9,6 +9,8 @@ import { TodoModule } from './todo/todo.module';
 
 @Module({
   imports: [
+    TodoModule,
+    ProjectModule,
     TypeOrmModule.forRoot({
       url: 'postgres://thebjbdfinubms:9a390e7186f6e324feea5fd4cb0a334920751d1c8bd5bac2b2983958daa0c02d@ec2-54-77-40-202.eu-west-1.compute.amazonaws.com:5432/dd8o6dd0fsm3r9',
       type: 'postgres',
@@ -27,8 +29,6 @@ import { TodoModule } from './todo/todo.module';
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     }),
-    ProjectModule,
-    TodoModule,
   ],
   controllers: [AppController],
   providers: [],
