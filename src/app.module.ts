@@ -10,13 +10,17 @@ import { TodoModule } from './todo/todo.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
+      url: 'postgres://thebjbdfinubms:9a390e7186f6e324feea5fd4cb0a334920751d1c8bd5bac2b2983958daa0c02d@ec2-54-77-40-202.eu-west-1.compute.amazonaws.com:5432/dd8o6dd0fsm3r9',
       type: 'postgres',
-      host: 'localhost',
-      database: 'Todo',
-      password: '123',
-      username: 'postgres',
+      // host: 'localhost',
+      // database: 'Todo',
+      // password: '123',
+      // username: 'postgres',
+      ssl: {
+        rejectUnauthorized: false,
+      },
       autoLoadEntities: true,
-      synchronize: true,
+      synchronize: false,
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
