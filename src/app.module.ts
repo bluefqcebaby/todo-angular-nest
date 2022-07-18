@@ -14,12 +14,12 @@ import { TodoModule } from './todo/todo.module';
     ProjectModule,
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
-      url: process.env.DATABASE_URL,
       type: 'postgres',
-      // host: 'localhost',
-      // database: 'Todo',
-      // password: '123',
-      // username: 'postgres',
+      host: 'ec2-54-77-40-202.eu-west-1.compute.amazonaws.com',
+      database: 'dd8o6dd0fsm3r9',
+      password:
+        '9a390e7186f6e324feea5fd4cb0a334920751d1c8bd5bac2b2983958daa0c02d',
+      username: 'thebjbdfinubms',
       ssl: {
         rejectUnauthorized: false,
       },
