@@ -12,7 +12,8 @@ export class ProjectService {
   ) {}
 
   async getAllProjects(): Promise<Projects[]> {
-    return this.projectsRepository.find({ relations: ['todos'] });
+    const result = await this.projectsRepository.find({ relations: ['todos'] });
+    return result.sort((a, b) => b.id - a.id);
   }
 
   async addProject(projectInput: IProjectInput): Promise<Projects> {

@@ -20,17 +20,21 @@ type Query {
 }
 
 type Mutation {
+  addTodo(todoInput: ITodoAddInput!): Todos!
+  updateTodo(todoInput: ITodoUpdateInput!): Todos!
   createProject(projectInput: IProjectInput!): Projects!
-  addOrUpdateTodo(todoInput: ITodoInput!): Todos!
+}
+
+input ITodoAddInput {
+  text: String!
+  project: Int!
+}
+
+input ITodoUpdateInput {
+  id: Int!
+  isCompleted: Boolean!
 }
 
 input IProjectInput {
   title: String!
-}
-
-input ITodoInput {
-  id: Int
-  text: String!
-  isCompleted: Boolean = false
-  project: Int!
 }
