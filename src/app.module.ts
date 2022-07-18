@@ -19,6 +19,7 @@ import { TodoModule } from './todo/todo.module';
       ssl: {
         rejectUnauthorized: false,
       },
+      entities: ['dist/**/*.entity{.ts,.js}'],
       autoLoadEntities: true,
       synchronize: false,
     }),
