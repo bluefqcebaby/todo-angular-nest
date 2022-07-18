@@ -1,26 +1,31 @@
-import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
-import { ProjectsModule } from './projects/projects.module';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { GraphQLModule } from '@nestjs/graphql';
+import { join } from 'path';
+import { ProjectModule } from './project/project.module';
 import { TodoModule } from './todo/todo.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: process.env.POSTGRES_HOST,
-      port: +process.env.POSTGRES_PORT,
-      username: process.env.POSTGRES_USERNAME,
-      password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DATABASE,
+      host: 'localhost',
+      database: 'Todo',
+      password: '123',
+      username: 'postgres',
       autoLoadEntities: true,
       synchronize: true,
     }),
-    ProjectsModule,
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+    }),
+    ProjectModule,
     TodoModule,
   ],
   controllers: [AppController],
+  providers: [],
 })
 export class AppModule {}

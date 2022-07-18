@@ -1,0 +1,36 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Todos {
+  id: Int!
+  text: String!
+  isCompleted: Boolean!
+  project: Int!
+}
+
+type Projects {
+  id: Int!
+  title: String!
+  todos: [Todos]!
+}
+
+type Query {
+  projects: [Projects!]!
+}
+
+type Mutation {
+  createProject(projectInput: IProjectInput!): Projects!
+  addOrUpdateTodo(todoInput: ITodoInput!): Todos!
+}
+
+input IProjectInput {
+  title: String!
+}
+
+input ITodoInput {
+  id: Int
+  text: String!
+  isCompleted: Boolean = false
+  project: Int!
+}
