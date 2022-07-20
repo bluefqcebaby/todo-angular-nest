@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 html,
 body {
   height: 100%;
@@ -5,21 +9,4 @@ body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-}
-*,
-*::after,
-*::before {
-  box-sizing: border-box;
-}
-p,
-h1,
-h2,
-h3 {
-  padding: 0;
-  margin: 0;
-}
-.container {
-  max-width: 1230px;
-  padding: 0 15px;
-  margin: 0 auto;
 }

@@ -1,0 +1,12 @@
+<mat-card>
+  <mat-card-title>{{ title | uppercase }}</mat-card-title>
+  <mat-divider></mat-divider>
+  <mat-card-actions class="actions flex-col gap-3">
+    <app-checkbox
+      *ngFor="let todo of todos"
+      [text]="todo.text"
+      [isCompleted]="todo.isCompleted"
+      [id]="todo.id"
+    ></app-checkbox>
+  </mat-card-actions>
+</mat-card>
