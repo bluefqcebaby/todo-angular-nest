@@ -7,7 +7,7 @@ import {
 } from '@angular/forms';
 import { Apollo, gql } from 'apollo-angular';
 import { UpdateCardsService } from '../services/update-cards.service';
-import {MatDialogRef} from "@angular/material/dialog";
+import { MatDialogRef } from '@angular/material/dialog';
 
 interface ISmallProject {
   id: number;
@@ -16,6 +16,12 @@ interface ISmallProject {
 
 interface Response {
   projects: ISmallProject[];
+}
+
+interface AddProjectResponse {
+  createProject: {
+    id: number
+  }
 }
 
 @Component({
@@ -32,10 +38,18 @@ export class DialogComponent implements OnInit {
 
   loading = true;
   myForm: FormGroup;
-  projects: ISmallProject[];
+  projects: ISmallProject[] = [];
 
   public refresh() {
     this.updateCards.setRefresh(true);
+  }
+
+  initForm(): void {
+    this.myForm = this.formBuilder.group({
+      todoText: new FormControl('', [Validators.required, Validators.min(3)]),
+      project: new FormControl(null, Validators.required),
+      newProject: new FormControl(null),
+    });
   }
 
   ngOnInit(): void {
@@ -50,46 +64,73 @@ export class DialogComponent implements OnInit {
             }
           }
         `,
+        fetchPolicy: "no-cache",
       })
       .valueChanges.subscribe((result) => {
+        const addNew = {
+          id: 999,
+          title: 'Новый проект',
+        };
         this.loading = result.loading;
-        this.projects = result.data.projects;
+        this.projects = [addNew, ...result.data.projects];
         this.initForm();
       });
   }
-
-  initForm(): void {
-    this.myForm = this.formBuilder.group({
-      todoText: new FormControl('', [Validators.required, Validators.min(3)]),
-      project: new FormControl(null, Validators.required),
-    });
+  ngOnDestroy() {
+    this.myForm.reset()
   }
-
   onSubmit(): void {
     if (this.myForm.valid) {
       this.loading = true;
-      this.apollo
-        .mutate({
-          mutation: gql`
-            mutation AddTodo($text: String!, $id: Int!) {
-              addTodo(todoInput: { text: $text, project: $id }) {
-                id
+      const { todoText, project, newProject } = this.myForm.value;
+      console.log(newProject);
+      if (newProject === null) {
+        this.addTodoMutaion(todoText, project);
+      } else {
+        this.apollo
+          .mutate<AddProjectResponse>({
+            mutation: gql`
+              mutation CreateProject($text: String!) {
+                createProject(projectInput: { title: $text }) {
+                  id
+                }
               }
-            }
-          `,
-          variables: {
-            text: this.myForm.value.todoText,
-            id: this.myForm.value.project,
-          },
-        })
-        .subscribe((res) => {
-          this.refresh();
-          this.loading = false;
-        });
+            `,
+            variables: {
+              text: newProject,
+            },
+          })
+          .subscribe((res) => {
+            console.log(res);
+            this.addTodoMutaion(todoText ,res.data?.createProject.id!)
+          });
+      }
     }
   }
 
+  addTodoMutaion(todoText: string, projectId: number) {
+    this.apollo
+      .mutate({
+        mutation: gql`
+          mutation AddTodo($text: String!, $id: Int!) {
+            addTodo(todoInput: { text: $text, project: $id }) {
+              id
+            }
+          }
+        `,
+        variables: {
+          text: todoText,
+          id: projectId,
+        },
+      })
+      .subscribe(() => {
+        this.refresh();
+        this.loading = false;
+        this.myForm.reset()
+      });
+  }
+
   closeDialog() {
-    this.dialogRef.close()
+    this.dialogRef.close();
   }
 }

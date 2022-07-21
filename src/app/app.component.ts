@@ -29,7 +29,7 @@ export class AppComponent implements OnInit {
 
   openDialog() {
     this.dialog.open(DialogComponent, {
-      minWidth: '450px',
+      maxWidth: '450px',
     });
   }
   ngOnInit() {

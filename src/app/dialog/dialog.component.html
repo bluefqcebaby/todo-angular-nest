@@ -1,5 +1,5 @@
 <form (ngSubmit)="onSubmit()" [formGroup]="myForm">
-  <mat-form-field appearance="fill" class="w-full pt-5">
+  <mat-form-field appearance="fill" class="w-full">
     <mat-label class="text-xl mb-2">Название задачи</mat-label>
     <input
       class="w-full"
@@ -15,6 +15,17 @@
     <mat-select formControlName="project">
       <mat-option *ngFor="let project of projects" [value]="project.id">{{ project.title }}</mat-option>
     </mat-select>
+  </mat-form-field>
+  <mat-form-field *ngIf="this.myForm.value.project === 999" appearance="fill" class="w-full">
+    <mat-label class="text-xl mb-2">Название нового проекта</mat-label>
+    <input
+      class="w-full"
+      formControlName="newProject"
+      matInput
+      placeholder="Название нового проекта"
+      style="margin-top:1rem;
+      font-size: 1.1rem"
+    >
   </mat-form-field>
   <mat-progress-spinner mode="indeterminate" diameter="30" *ngIf="loading" class="mx-auto"></mat-progress-spinner>
   <div class="flex gap-3 ml-auto justify-end">
